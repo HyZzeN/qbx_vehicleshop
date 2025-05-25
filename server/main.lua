@@ -53,8 +53,10 @@ RegisterNetEvent('qbx_vehicleshop:server:testDrive', function(vehicle)
     }
 
     Player(src).state:set('isInTestDrive', testDrive.limit, true)
+    exports.mVehicle:ItemCarKeys(src, 'add', plate)
     SetTimeout(testDrive.limit * 60000, function()
         Player(src).state:set('isInTestDrive', nil, true)
+        exports.mVehicle:ItemCarKeys(src, 'delete', plate)
     end)
 end)
 
@@ -137,17 +139,32 @@ RegisterNetEvent('qbx_vehicleshop:server:buyShowroomVehicle', function(vehicle)
         return exports.qbx_core:Notify(src, locale('error.notenoughmoney'), 'error')
     end
 
-    local vehicleId = exports.qbx_vehicles:CreatePlayerVehicle({
+    --[[local vehicleId = exports.qbx_vehicles:CreatePlayerVehicle({
         model = vehicle,
         citizenid = player.PlayerData.citizenid,
     })
 
-    exports.qbx_core:Notify(src, locale('success.purchased'), 'success')
-
     SpawnVehicle(src, {
         coords = coords,
         vehicleId = vehicleId
-    })
+    })]]--
+
+    local CreateVehicleData = {
+        source = src,
+        --intocar = false,
+        setOwner = true,
+        coords = coords,
+        model = vehicle,
+        vehicle = {
+          fuelLevel = 100,
+        },
+    }
+
+    exports.mVehicle:CreateVehicle(CreateVehicleData, function(data, Vehicle)
+        exports.mVehicle:ItemCarKeys(src, 'add', data.plate)
+    end)
+
+    exports.qbx_core:Notify(src, locale('success.purchased'), 'success')
 end)
 
 ---@param src number
@@ -205,7 +222,7 @@ RegisterNetEvent('qbx_vehicleshop:server:sellShowroomVehicle', function(vehicle,
 
     if not SellShowroomVehicleTransact(src, target, vehiclePrice, vehiclePrice) then return end
 
-    local vehicleId = exports.qbx_vehicles:CreatePlayerVehicle({
+    --[[local vehicleId = exports.qbx_vehicles:CreatePlayerVehicle({
         model = vehicle,
         citizenid = cid,
     })
@@ -213,7 +230,23 @@ RegisterNetEvent('qbx_vehicleshop:server:sellShowroomVehicle', function(vehicle,
     SpawnVehicle(playerId, {
         coords = coords,
         vehicleId = vehicleId
-    })
+    })]]--
+
+    local CreateVehicleData = {
+        source = src,
+        --intocar = false,
+        setOwner = true,
+        owner = cid,
+        coords = coords,
+        model = vehicle,
+        vehicle = {
+          fuelLevel = 100,
+        },
+    }
+
+    exports.mVehicle:CreateVehicle(CreateVehicleData, function(data, Vehicle)
+        exports.mVehicle:ItemCarKeys(src, 'add', data.plate)
+    end)
 end)
 
 -- Transfer vehicle to player in passenger seat
@@ -318,7 +351,7 @@ lib.addCommand('transfervehicle', {
         end
 
         exports.qbx_vehicles:SetPlayerVehicleOwner(row.id, targetcid)
-        config.giveKeys(buyerId, row.plate, vehicle)
+        --config.giveKeys(buyerId, row.plate, vehicle)
 
         local sellerMessage = sellAmount > 0 and locale('success.soldfor') .. lib.math.groupdigits(sellAmount) or locale('success.gifted')
         local buyerMessage = sellAmount > 0 and locale('success.boughtfor') .. lib.math.groupdigits(sellAmount) or locale('success.received_gift')

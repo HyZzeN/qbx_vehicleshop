@@ -260,11 +260,12 @@ return {
                 cycles = 'Bicycles'
             },
             testDrive = {
-                limit = 5.0,
+                limit = 1.0,
                 endBehavior = 'return'
             },
             returnLocation = vec3(-32.77, -1095.75, 26.42),
             vehicleSpawns = {
+                vec4(-31.5, -1090.38, 25.89, 329.1),
                 vec4(-61.35, -1110.31, 25.86, 71.01),
                 vec4(-59.61, -1104.74, 25.85, 70.13),
                 vec4(-52.96, -1113.49, 25.87, 71.53),
