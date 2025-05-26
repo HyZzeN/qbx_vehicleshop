@@ -2,20 +2,23 @@
 local function insertVehicleEntityWithFinance(request)
     local insertVehicleEntityRequest = request.insertVehicleEntityRequest
     local vehicleFinance = request.vehicleFinance
-    local vehicleId = exports.qbx_vehicles:CreatePlayerVehicle({
-        model = insertVehicleEntityRequest.model,
-        citizenid = insertVehicleEntityRequest.citizenId,
-    })
+    --local vehicleId = exports.qbx_vehicles:CreatePlayerVehicle({
+    --    model = insertVehicleEntityRequest.model,
+    --    citizenid = insertVehicleEntityRequest.citizenId,
+    --})
+
+    --local vehicleId = insertVehicleEntityRequest.vehicleId
 
     MySQL.insert('INSERT INTO vehicle_financing (vehicleId, balance, paymentamount, paymentsleft, financetime) VALUES (?, ?, ?, ?, ?)', {
-        vehicleId,
+        --vehicleId,
+        insertVehicleEntityRequest.vehicleId,
         vehicleFinance.balance,
         vehicleFinance.payment,
         vehicleFinance.paymentsLeft,
         vehicleFinance.timer
     })
 
-    return vehicleId
+    --return vehicleId
 end
 
 ---@param time number

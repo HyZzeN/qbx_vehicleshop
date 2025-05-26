@@ -87,7 +87,7 @@ local function showFinancedVehiclesMenu()
 
     for _, v in pairs(vehicles) do
         local plate = v.props.plate
-        local vehicle = VEHICLES[v.modelName]
+        local vehicle = VEHICLES[v.props.model]
 
         plate = plate and plate:upper()
 

@@ -308,7 +308,7 @@ RegisterNetEvent('qbx_vehicleshop:server:financeVehicle', function(downPayment, 
     local citizenId = player.PlayerData.citizenid
     local timer = (config.finance.paymentInterval * 60) + (math.floor((os.time() - financeTimer[src].time) / 60))
 
-    local vehicleId = financeStorage.insertVehicleEntityWithFinance({
+    --[[local vehicleId = financeStorage.insertVehicleEntityWithFinance({
         insertVehicleEntityRequest = {
             citizenId = citizenId,
             model = vehicle,
@@ -320,14 +320,46 @@ RegisterNetEvent('qbx_vehicleshop:server:financeVehicle', function(downPayment, 
             paymentsLeft = paymentAmount,
             timer = timer,
         }
-    })
+    })]]--
+
+    local CreateVehicleData = {
+        source = src,
+        --intocar = false,
+        setOwner = true,
+        owner = citizenId,
+        coords = coords,
+        model = vehicle,
+        vehicle = {
+          fuelLevel = 100,
+        },
+    }
+
+    exports.mVehicle:CreateVehicle(CreateVehicleData, function(data, Vehicle)
+        local vehicleId = data.id
+
+        financeStorage.insertVehicleEntityWithFinance({
+            insertVehicleEntityRequest = {
+                citizenId = citizenId,
+                vehicleId = vehicleId,
+            },
+
+            vehicleFinance = {
+                balance = balance,
+                payment = vehPaymentAmount,
+                paymentsLeft = paymentAmount,
+                timer = timer,
+            }
+        })
+
+        exports.mVehicle:ItemCarKeys(src, 'add', data.plate)
+    end)
 
     exports.qbx_core:Notify(src, locale('success.purchased'), 'success')
 
-    SpawnVehicle(src, {
+    --[[SpawnVehicle(src, {
         coords = coords,
         vehicleId = vehicleId
-    })
+    })]]--
 
     financeTimer[src].hasFinanced = true
 end)
