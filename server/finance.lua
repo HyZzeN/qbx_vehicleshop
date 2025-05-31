@@ -324,13 +324,13 @@ RegisterNetEvent('qbx_vehicleshop:server:financeVehicle', function(downPayment, 
 
     local CreateVehicleData = {
         source = src,
-        --intocar = false,
         setOwner = true,
         owner = citizenId,
         coords = coords,
         model = vehicle,
         vehicle = {
           fuelLevel = 100,
+          dirtLevel = 0,
         },
     }
 
@@ -352,6 +352,20 @@ RegisterNetEvent('qbx_vehicleshop:server:financeVehicle', function(downPayment, 
         })
 
         exports.mVehicle:ItemCarKeys(src, 'add', data.plate)
+
+        local props = exports.mVehicle:GetClientProps(src, data.NetId)
+
+        props.plate = data.vehicle.plate
+        props.model = data.vehicle.model
+
+        Vehicle.SaveProps(props)
+
+        Vehicle.SetMetadata({
+            DoorStatus = 2,
+            coords = data.coords
+        })
+
+        SetVehicleDoorsLocked(data.entity, 2)
     end)
 
     exports.qbx_core:Notify(src, locale('success.purchased'), 'success')

@@ -18,9 +18,21 @@ return {
         default = 'pdm',
 
         categories = {
+            -- super = { 'pdm', 'luxury' },
             boats = 'boats',
             air = 'air',
-            -- super = { 'pdm', 'luxury' },
+            motorcycles = 'biker',
+            --cycles = 'Bicycles',
+            sedans = 'pdm',
+            coupes = 'pdm',
+            offroad = 'pdm',
+            muscle = 'pdm',
+            compacts = 'pdm',
+            vans = 'pdm',
+            suvs = 'luxury',
+            sportsclassics = 'luxury',
+            sports = 'luxury',
+            super = 'luxury',
         },
 
         models = {
@@ -157,7 +169,7 @@ return {
             vagner = 'luxury',
             visione = 'luxury',
             voltic = 'luxury',
-            voltic2 = 'luxury',
+            --voltic2 = 'luxury',
             xa21 = 'luxury',
             zentorno = 'luxury',
             zorrusso = 'luxury',
@@ -215,10 +227,39 @@ return {
         },
 
         blocklist = {
+            -- ems
+            'blazer2',
+            -- police
             'police',
             'police2',
             'police3',
             'police4',
+            -- army
+            'insurgent',
+            'insurgent2',
+            'insurgent3',
+            'technical',
+            'technical2',
+            'nightshark',
+            'dune3',
+            'dune4',
+            -- merryweather
+            'dilettante2',
+            -- monstertrucks
+            'monster4',
+            'bruiser2',
+            'brutus',
+            'brutus2',
+            'brutus3',
+            -- prototypes
+            'voltic2',
+            -- lore
+            'rcbandito',
+            'rancherxl2',
+            -- rares
+            'issi4',
+            'issi5',
+            'issi6',
         }
     },
 
@@ -248,16 +289,14 @@ return {
                 color = 3,
             },
             categories = {
-                sportsclassics = 'Sports Classics',
                 sedans = 'Sedans',
                 coupes = 'Coupes',
-                suvs = 'SUVs',
                 offroad = 'Offroad',
                 muscle = 'Muscle',
                 compacts = 'Compacts',
-                motorcycles = 'Motorcycles',
-                vans = 'Vans',
-                cycles = 'Bicycles'
+                vans = 'Vans'
+                --motorcycles = 'Motorcycles',
+                --cycles = 'Bicycles',
             },
             testDrive = {
                 limit = 1.0,
@@ -274,14 +313,60 @@ return {
                 vec4(-41.75, -1111.49, 25.87, 71.5),
             },
             showroomVehicles = {
-                { coords = vec4(-45.65, -1093.66, 25.44, 69.5), vehicle = 'asbo' },
-                { coords = vec4(-48.27, -1101.86, 25.44, 294.5), vehicle = 'schafter2' },
-                { coords = vec4(-39.6, -1096.01, 25.44, 66.5), vehicle = 'greenwood' },
-                { coords = vec4(-51.21, -1096.77, 25.44, 254.5), vehicle = 'vigero' },
-                { coords = vec4(-40.18, -1104.13, 25.44, 338.5), vehicle = 'impaler' },
-                { coords = vec4(-43.31, -1099.02, 25.44, 52.5), vehicle = 'bati' },
-                { coords = vec4(-50.66, -1093.05, 25.44, 222.5), vehicle = 'bati' },
-                { coords = vec4(-44.28, -1102.47, 25.44, 298.5), vehicle = 'bati' },
+                --{ coords = vec4(-45.65, -1093.66, 25.44, 69.5), vehicle = 'asbo' },
+                { coords = vec4(-47.94, -1101.52, 25.44, 325.04), vehicle = 'asbo' },
+                { coords = vec4(-40.43, -1103.87, 25.44, 8.26), vehicle = 'asbo' },
+                { coords = vec4(-41.86, -1094.77, 25.44, 155.51), vehicle = 'asbo' },
+                { coords = vec4(-48.9, -1092.59, 25.44, 170.86), vehicle = 'asbo' },
+            },
+        },
+
+        luxury = {
+            type = 'free-use',
+            zone = {
+                shape = {
+                    vec3(-184.51, -1159.4, 23.0),
+                    vec3(-184.65, -1162.09, 23.0),
+                    vec3(-192.34, -1161.64, 23.0),
+                    vec3(-192.9, -1177.42, 23.0),
+                    vec3(-161.73, -1177.48, 23.0),
+                    vec3(-161.9, -1159.32, 23.0)
+                },
+                size = vec3(3, 3, 4),
+                targetDistance = 1,
+            },
+            blip = {
+                label = 'Luxury Motors',
+                coords = vec3(-189.68, -1160.34, 24.02),
+                show = true,
+                sprite = 523,
+                color = 3,
+            },
+            categories = {
+                suvs = 'SUVs',
+                sportsclassics = 'Sports Classics',
+                sports = 'Sports',
+                super = 'Super',
+            },
+            testDrive = {
+                limit = 1.0,
+                endBehavior = 'return'
+            },
+            returnLocation = vec3(-191.59, -1176.89, 23.17),
+            vehicleSpawns = {
+                vec4(-184.71, -1179.98, 23.1, 268.23),
+                vec4(-171.09, -1180.23, 24.33, 271.78),
+                vec4(-188.36, -1184.92, 23.45, 267.84),
+                vec4(-180.38, -1184.99, 23.74, 269.89),
+                vec4(-172.79, -1185.04, 24.16, 270.05)
+            },
+            showroomVehicles = {
+                { coords = vec4(-184.97, -1174.2, 22.13, 5.57), vehicle = 'adder' },
+                { coords = vec4(-176.59, -1162.3, 22.04, 42.55), vehicle = 'adder' },
+                { coords = vec4(-170.57, -1162.27, 22.04, 41.22), vehicle = 'adder' },
+                { coords = vec4(-164.35, -1162.17, 22.04, 42.16), vehicle = 'adder' },
+                { coords = vec4(-164.4, -1168.55, 22.04, 89.41), vehicle = 'adder' },
+                { coords = vec4(-164.72, -1175.02, 22.04, 48.54), vehicle = 'adder' },
             },
         },
 

@@ -151,17 +151,31 @@ RegisterNetEvent('qbx_vehicleshop:server:buyShowroomVehicle', function(vehicle)
 
     local CreateVehicleData = {
         source = src,
-        --intocar = false,
         setOwner = true,
         coords = coords,
         model = vehicle,
         vehicle = {
           fuelLevel = 100,
+          dirtLevel = 0,
         },
     }
 
     exports.mVehicle:CreateVehicle(CreateVehicleData, function(data, Vehicle)
         exports.mVehicle:ItemCarKeys(src, 'add', data.plate)
+
+        local props = exports.mVehicle:GetClientProps(src, data.NetId)
+
+        props.plate = data.vehicle.plate
+        props.model = data.vehicle.model
+
+        Vehicle.SaveProps(props)
+
+        Vehicle.SetMetadata({
+            DoorStatus = 2,
+            coords = data.coords
+        })
+
+        SetVehicleDoorsLocked(data.entity, 2)
     end)
 
     exports.qbx_core:Notify(src, locale('success.purchased'), 'success')

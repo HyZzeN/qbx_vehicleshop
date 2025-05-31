@@ -181,24 +181,67 @@ end
 ---@param targetVehicle number
 local function openVehCatsMenu(category, targetVehicle)
     local categoryMenu = {}
+    local pendingSwap = nil
+    local debounceDelay = 250
 
     for i = 1, vehiclesMenu.count do
         local vehicle = vehiclesMenu.vehicles[i]
         if vehicle.category == category and vehicle.shopType == insideShop then
             vehicle.args.closestShop = insideShop
             vehicle.args.targetVehicle = targetVehicle
-            categoryMenu[#categoryMenu + 1] = vehicle
+            local displayName = string.format("%s (%s)", vehicle.title or "Inconnu", vehicle.args.toVehicle or "N/A")
+
+            categoryMenu[#categoryMenu + 1] = {
+                label = displayName,
+                description = vehicle.description or "",
+                args = vehicle.args,
+            }
         end
     end
 
-    lib.registerContext({
+    lib.registerMenu({
         id = 'openVehCats',
         title = sharedConfig.shops[insideShop].categories[category],
-        menu = 'vehicleCategories',
-        options = categoryMenu
+        position = 'top-right',
+        onSideScroll = function(selected, scrollIndex, _)
+            local vehicleData = categoryMenu[scrollIndex]
+
+            if pendingSwap then
+                pendingSwap.cancel = true
+            end
+
+            local thisSwap = {cancel = false}
+            pendingSwap = thisSwap
+
+            CreateThread(function()
+                Wait(debounceDelay)
+                if not thisSwap.cancel then
+                    -- Le joueur a fini de scroller, on peut swap
+                    if vehicleData and vehicleData.args and vehicleData.args.toVehicle then
+                        TriggerServerEvent('qbx_vehicleshop:server:swapVehicle', vehicleData.args)
+                    end
+                end
+            end)
+        end,
+        onClose = function()
+            ClearPedTasksImmediately(PlayerPedId())
+        end,
+        options = {
+            {
+                label = 'Véhicules disponibles',
+                values = categoryMenu,
+                icon = 'car'
+            }
+        }
     })
 
-    lib.showContext('openVehCats')
+    if categoryMenu[1] and categoryMenu[1].args then
+        TriggerServerEvent('qbx_vehicleshop:server:swapVehicle', categoryMenu[1].args)
+    end
+
+    TaskStartScenarioInPlace(PlayerPedId(), "WORLD_HUMAN_CLIPBOARD", 0, true)
+
+    lib.showMenu('openVehCats')
 end
 
 --- Opens a menu with list of vehicle categories
